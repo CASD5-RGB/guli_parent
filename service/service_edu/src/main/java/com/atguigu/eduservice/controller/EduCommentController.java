@@ -34,7 +34,9 @@ public class EduCommentController {
 
     //根据课程id_分页查询课程评论的方法
     @GetMapping("/getCommentPage/{page}/{limit}")
-    public R getCommentPage(@PathVariable Long page,@PathVariable Long limit,String courseId){
+    public R getCommentPage(@PathVariable Long page,
+                            @PathVariable Long limit,
+                            String courseId){
         Page<EduComment> commentPage = new Page<>(page, limit);
 
         QueryWrapper<EduComment> wrapper = new QueryWrapper<>();

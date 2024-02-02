@@ -35,6 +35,7 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
         //1根据课程id查询课程里面所有的章节
         QueryWrapper<EduChapter> chapterQueryWrapper = new QueryWrapper<>();
         chapterQueryWrapper.eq("course_id", courseId);
+        //1.1根据课程id查询章节信息（章节信息可能有多个）
         List<EduChapter> eduChapterList = baseMapper.selectList(chapterQueryWrapper);
         //2根据课程id查询课程里面所有的小节
         QueryWrapper<EduVideo> videoQueryWrapper = new QueryWrapper<>();
@@ -45,6 +46,7 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
         ArrayList<ChapterVo> finalList = new ArrayList<>();
         //3遍历查询章节list集合进行封装
         for (int i = 0; i < eduChapterList.size(); i++) {
+            //3.1、获取章节信息
             EduChapter eduChapter = eduChapterList.get(i);
             ChapterVo chapterVo = new ChapterVo();
             BeanUtils.copyProperties(eduChapter, chapterVo);

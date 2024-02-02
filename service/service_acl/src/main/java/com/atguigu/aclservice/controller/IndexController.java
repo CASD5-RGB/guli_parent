@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-
-@RestController
+@RestController //请求映射
 @RequestMapping("/admin/acl/index")
-//@CrossOrigin
+//@CrossOrigin //跨域
 public class IndexController {
 
     @Autowired
@@ -24,7 +23,8 @@ public class IndexController {
     @GetMapping("info")
     public R info(){
         //获取当前登录用户用户名
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
         Map<String, Object> userInfo = indexService.getUserInfo(username);
         return R.ok().data(userInfo);
     }

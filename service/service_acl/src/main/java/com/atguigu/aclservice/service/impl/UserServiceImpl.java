@@ -18,8 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
+    //根据用户名查询用户
     @Override
     public User selectByUsername(String username) {
-        return baseMapper.selectOne(new QueryWrapper<User>().eq("username", username));
+        //根据用户名查询用户
+        return baseMapper.selectOne(new QueryWrapper<User>()//查询条件
+                .eq("username", username));
     }
 }

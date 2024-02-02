@@ -25,7 +25,7 @@ public class EduChapterController {
     @Autowired
     private EduChapterService chapterService;
 
-    //添加课程基本信息的方法
+    //根据课程id查询章节和小节
     @GetMapping("getChapterVideo/{courseId}")
     public R getChapterVo(@PathVariable String courseId) {
         List<ChapterVo> list = chapterService.getChapterVoByCourseId(courseId);

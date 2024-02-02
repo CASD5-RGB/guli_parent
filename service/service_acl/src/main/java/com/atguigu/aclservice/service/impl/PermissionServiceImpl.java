@@ -33,10 +33,10 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 
     @Autowired
     private RolePermissionService rolePermissionService;
-    
+
     @Autowired
     private UserService userService;
-    
+
     //获取全部菜单
     @Override
     public List<Permission> queryAllMenu() {
@@ -87,12 +87,12 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 
         rolePermissionService.remove(new QueryWrapper<RolePermission>().eq("role_id", roleId));
 
-  
+
 
         List<RolePermission> rolePermissionList = new ArrayList<>();
         for(String permissionId : permissionIds) {
             if(StringUtils.isEmpty(permissionId)) continue;
-      
+
             RolePermission rolePermission = new RolePermission();
             rolePermission.setRoleId(roleId);
             rolePermission.setPermissionId(permissionId);
@@ -120,6 +120,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
             //如果是系统管理员，获取所有权限
             selectPermissionValueList = baseMapper.selectAllPermissionValue();
         } else {
+            //如果不是系统管理员，获取用户权限
             selectPermissionValueList = baseMapper.selectPermissionValueByUserId(id);
         }
         return selectPermissionValueList;
@@ -132,6 +133,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
             //如果是超级管理员，获取所有菜单
             selectPermissionList = baseMapper.selectList(null);
         } else {
+            //如果不是超级管理员，获取用户菜单
             selectPermissionList = baseMapper.selectPermissionByUserId(userId);
         }
 
@@ -211,6 +213,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     public List<Permission> queryAllMenuGuli() {
         //1 查询菜单表所有数据
         QueryWrapper<Permission> wrapper = new QueryWrapper<>();
+        //排序
         wrapper.orderByDesc("id");
         List<Permission> permissionList = baseMapper.selectList(wrapper);
         //2 把查询所有菜单list集合按照要求进行封装

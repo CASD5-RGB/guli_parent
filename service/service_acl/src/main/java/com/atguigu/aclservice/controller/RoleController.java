@@ -4,7 +4,9 @@ package com.atguigu.aclservice.controller;
 import com.atguigu.aclservice.entity.Role;
 import com.atguigu.aclservice.service.RoleService;
 import com.atguigu.commonutils.R;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -31,21 +33,25 @@ public class RoleController {
     private RoleService roleService;
 
     @ApiOperation(value = "获取角色分页列表")
-    @GetMapping("{page}/{limit}")
+    @GetMapping("{page}/{limit}")//分页
     public R index(
             @ApiParam(name = "page", value = "当前页码", required = true)
             @PathVariable Long page,
 
             @ApiParam(name = "limit", value = "每页记录数", required = true)
             @PathVariable Long limit,
+            //分页参数封装
             Role role) {
         Page<Role> pageParam = new Page<>(page, limit);
-        QueryWrapper<Role> wrapper = new QueryWrapper<>();
+        LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
         if(!StringUtils.isEmpty(role.getRoleName())) {
-            wrapper.like("role_name",role.getRoleName());
+            //条件封装
+//            wrapper.like("role_name",role.getRoleName());
+            wrapper.like(Role::getRoleName,role.getRoleName());
         }
-        roleService.page(pageParam,wrapper);
-        return R.ok().data("items", pageParam.getRecords()).data("total", pageParam.getTotal());
+        roleService.page(pageParam, wrapper);
+        return R.ok().data("items", pageParam.getRecords())
+                .data("total", pageParam.getTotal());
     }
 
     @ApiOperation(value = "获取角色")

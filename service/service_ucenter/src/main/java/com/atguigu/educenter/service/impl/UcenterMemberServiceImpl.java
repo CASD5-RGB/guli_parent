@@ -28,6 +28,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
     private RedisTemplate<String,String> redisTemplate;
     @Override
     public String login(UcenterMember member) {
+        //获取手机号和密码
         String mobile = member.getMobile();
         String password = member.getPassword();
 
@@ -58,7 +59,8 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
 
         //登录成功
         //生成token字符串，使用jwt工具类
-        String jwtToken = JwtUtils.getJwtToken(ucenterMember.getId(), ucenterMember.getNickname());
+        String jwtToken = JwtUtils.
+                getJwtToken(ucenterMember.getId(), ucenterMember.getNickname());
 
         return jwtToken;
     }
@@ -73,7 +75,10 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         String password = registerVo.getPassword(); //密码
 
         //非空判断
-        if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password) || StringUtils.isEmpty(code)||StringUtils.isEmpty(nickname)){
+        if (StringUtils.isEmpty(mobile)
+                || StringUtils.isEmpty(password)
+                || StringUtils.isEmpty(code)
+                || StringUtils.isEmpty(nickname)){
             throw new GuliException(20001,"注册失败");
         }
 
@@ -88,6 +93,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         QueryWrapper<UcenterMember> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("mobile",mobile);
         Integer count = baseMapper.selectCount(queryWrapper);
+        //判断手机号是否重复
         if(count>0){
             throw new GuliException(20001,"注册失败");
         }

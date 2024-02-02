@@ -13,6 +13,7 @@ import com.atguigu.eduservice.service.EduCourseService;
 import com.atguigu.eduservice.service.EduVideoService;
 import com.atguigu.servicebase.exceptionhandler.GuliException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
@@ -116,7 +117,8 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     }
 
     @Override
-    public Map<String, Object> getTeacherInfo(Page<EduCourse> queryVoPage, CourseQueryVo courseQueryVo) {
+    public Map<String, Object> getTeacherInfo(Page<EduCourse> queryVoPage,
+                                              CourseQueryVo courseQueryVo) {
         QueryWrapper<EduCourse> queryWrapper = new QueryWrapper<>();
         //判断条件是否为空
         if (!StringUtils.isEmpty(courseQueryVo.getSubjectParentId())){//一级分类
@@ -128,6 +130,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         if (!StringUtils.isEmpty(courseQueryVo.getBuyCountSort())) {//销量排序
             queryWrapper.orderByDesc("buy_count");
         }
+        // 先按时间排序，时间相同的，按照价格进行排序
         if (!StringUtils.isEmpty(courseQueryVo.getGmtCreateSort())) {//时间排序
             queryWrapper.orderByDesc("gmt_create");
         }
@@ -136,8 +139,9 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         }
 
         //封装到page里面
-        baseMapper.selectPage(queryVoPage, queryWrapper);
+        IPage<EduCourse> eduCourseIPage = baseMapper.selectPage(queryVoPage, queryWrapper);
 
+        //eduCourseIPage中的内容与queryVoPage中的数据一样
         long total = queryVoPage.getTotal();
         List<EduCourse> records = queryVoPage.getRecords();
         long current = queryVoPage.getCurrent();

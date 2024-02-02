@@ -1,5 +1,4 @@
 package com.atguigu.educenter.controller;
-;
 import com.atguigu.commonutils.JwtUtils;
 import com.atguigu.educenter.entity.UcenterMember;
 import com.atguigu.educenter.service.UcenterMemberService;

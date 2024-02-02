@@ -24,7 +24,7 @@ import lombok.experimental.Accessors;
  * @since 2022-12-20
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false) //生成实体时，不生成equals()和hashCode()方法
 @Accessors(chain = true)
 @ApiModel(value="EduCourse对象", description="课程")
 public class EduCourse implements Serializable {

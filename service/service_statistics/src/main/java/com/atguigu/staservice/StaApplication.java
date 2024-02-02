@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableScheduling  //开启定时任务的注解
-@EnableTransactionManagement
+@EnableTransactionManagement//·开启事务注解
 @EnableDiscoveryClient
 @EnableFeignClients    //服务调用
 @ComponentScan("com.atguigu")

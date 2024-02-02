@@ -24,7 +24,7 @@ public class CodeGenerator {
         System.out.println(projectPath);
         gc.setOutputDir("D:\\project\\guli_parent\\service\\service_edu"+ "/src/main/java");
 
-        gc.setAuthor("text.java");
+        gc.setAuthor("赵祖银");
         gc.setOpen(false); //生成后是否打开资源管理器
         gc.setFileOverride(false); //重新生成时文件是否覆盖
         /*

@@ -26,8 +26,11 @@ public class TeacherFrontController {
     private EduCourseService eduCourseService;
     //分页查询讲师
     @PostMapping("getTeacherFrontList/{page}/{limit}")
-    public R getTeacherFrontList(@PathVariable long page,@PathVariable long limit){
+    public R getTeacherFrontList(@PathVariable long page,
+                                 @PathVariable long limit){
+        //1、封装分页条件参数对象
         Page<EduTeacher> pageTeacher = new Page<>(page,limit);
+        //2、调用service层的方法
         Map<String,Object> map = eduTeacherService.getTeacherFrontList(pageTeacher);
         return R.ok().data(map);
     }

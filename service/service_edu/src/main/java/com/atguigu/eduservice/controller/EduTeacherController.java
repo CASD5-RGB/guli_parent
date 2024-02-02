@@ -25,7 +25,7 @@ import java.util.List;
  * @author text.java
  * @since 2022-12-16
  */
-@Api(description = "讲师管理")
+@Api(tags = "讲师管理")
 @RestController  //返回json数据
 @RequestMapping("/eduservice/teacher")  //访问路径
 @CrossOrigin

@@ -24,7 +24,7 @@ public class PayLogController {
     private PayLogService payLogService;
 
     //生成微信支付二维码
-    //参数时订单号
+    //参数是订单号
     @GetMapping("createNative/{orderNo}")
     public R createNative(@PathVariable String orderNo){
         //返回信息，包含二维码地址，还有其他需要的信息

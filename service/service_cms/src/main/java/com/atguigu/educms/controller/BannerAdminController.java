@@ -7,6 +7,7 @@ import com.atguigu.educms.service.CrmBannerService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -26,10 +27,13 @@ public class BannerAdminController {
     //分页查询banner
     @GetMapping("pageBanner/{page}/{limit}")
     @ApiOperation(value = "获取Banner分页列表")
-    public R pageBanner(@PathVariable long page, @PathVariable long limit){
+    public R pageBanner(@PathVariable long page,
+                        @PathVariable long limit){
         Page<CrmBanner> crmBannerPage = new Page<CrmBanner>(page, limit);
+        //调用分页方法,获取所有数据
         crmBannerService.page(crmBannerPage,null);
-        return R.ok().data("items",crmBannerPage.getRecords()).data("total",crmBannerPage.getTotal());
+        return R.ok().data("items",crmBannerPage.getRecords())
+                .data("total",crmBannerPage.getTotal());
 
     }
 
@@ -50,6 +54,9 @@ public class BannerAdminController {
     @GetMapping("get/{id}")
     public R getById(@PathVariable String id){
         CrmBanner crmBanner = crmBannerService.getById(id);
+        //判断是否为空
+        if (StringUtils.isEmpty(crmBanner))
+            return R.error();
         return R.ok().data("item",crmBanner);
     }
     //修改banner

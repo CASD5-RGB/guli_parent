@@ -29,14 +29,15 @@ public class IndexFrontController {
         QueryWrapper<EduCourse> courseQueryWrapper = new QueryWrapper<>();
         courseQueryWrapper.orderByDesc("id");
         courseQueryWrapper.last("limit 8");
+        //查询前8条热门课程
         List<EduCourse> courseList = courseService.list(courseQueryWrapper);
 //        System.out.println(courseList);
-        //查看前8条热门课程
+
         QueryWrapper<EduTeacher> eduTeacherQueryWrapper = new QueryWrapper<>();
         eduTeacherQueryWrapper.orderByDesc("id");
         eduTeacherQueryWrapper.last("limit 4");
-        List<EduTeacher> teacherList= teacherService.list(eduTeacherQueryWrapper);
         //查询前4条名师
+        List<EduTeacher> teacherList= teacherService.list(eduTeacherQueryWrapper);
         return R.ok().data("courseList",courseList).data("teacherList",teacherList);
     }
 

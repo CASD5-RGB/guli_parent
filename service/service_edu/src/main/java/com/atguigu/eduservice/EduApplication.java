@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {"com.atguigu"})
 @SpringBootApplication
 @EnableDiscoveryClient //nacos注册
-@EnableFeignClients  //
+@EnableFeignClients  //开启feign客户端，允许远程调用其他API
 public class EduApplication {
 
     public static void main(String[] args) {

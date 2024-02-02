@@ -74,8 +74,7 @@ public class EduCourseController {
     @PostMapping("publishCourse/{id}")
     public R publishCourse(@PathVariable String id){
         EduCourse eduCourse = new EduCourse();
-        eduCourse.setId(id);
-        eduCourse.setStatus("Normal");//设置课程发布状态
+        eduCourse.setId(id).setStatus("Normal");//设置课程发布状态
         boolean b = courseService.updateById(eduCourse);
         if (b){
             return R.ok();

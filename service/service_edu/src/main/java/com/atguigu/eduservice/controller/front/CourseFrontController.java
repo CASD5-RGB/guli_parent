@@ -22,7 +22,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("eduservice/coursefront")
-@CrossOrigin
+@CrossOrigin //跨域
 public class CourseFrontController {
 
     @Autowired
@@ -58,7 +58,10 @@ public class CourseFrontController {
         //根据课程Id和用户ID查询订单表中是否支付
         String memberId = JwtUtils.getMemberIdByJwtToken(request);//取出用户id
         boolean buyCourse = orderClient.isBuyCourse(courseId, memberId);
-        return R.ok().data("courseWebVo",courseWebVo).data("chapterVideoList",chapterVoList).data("isBuy",buyCourse);
+        return R.ok()
+                .data("courseWebVo",courseWebVo)
+                .data("chapterVideoList",chapterVoList)
+                .data("isBuy",buyCourse);
     }
     //远程调用根据课程id获得课程信息
     @PostMapping("getCourseInfoOrder/{id}")

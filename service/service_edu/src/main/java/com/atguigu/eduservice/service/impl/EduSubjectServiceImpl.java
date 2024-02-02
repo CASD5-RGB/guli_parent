@@ -35,8 +35,12 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
     public void saveSubject(MultipartFile file,EduSubjectService subjectService) {
         //获取输入流
         try {
+            //获取输入流
             InputStream is = file.getInputStream();
-            EasyExcel.read(is, SubjectData.class, new SubjectExcelListener(subjectService)).sheet().doRead();
+            EasyExcel.read(is, SubjectData.class,
+                    new SubjectExcelListener(subjectService))
+                    .sheet()
+                    .doRead();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,19 +53,19 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
         //1查询出所有一级分类 parent_id=0
 
         QueryWrapper<EduSubject> wrapper = new QueryWrapper<>();
+        //获取一级分类
         wrapper.eq("parent_id", "0");
+        //封装一级分类的数据
         List<EduSubject> oneSubjectList = baseMapper.selectList(wrapper);
         //2查询出所有二级分类 parent_id!=0
-
         QueryWrapper<EduSubject> wrapper2 = new QueryWrapper<>();
+        //获取二级分类
         wrapper2.ne("parent_id", "0");
         List<EduSubject> twoSubjectList = baseMapper.selectList(wrapper2);
 
-        //3封装一级分类
+        //3封装最终的返回结果，返回多个OneSubject对象
         List<OneSubject> finnalList = new ArrayList<>();
-        for (int i = 0; i < oneSubjectList.size(); i++) {
-            EduSubject eduSubject = oneSubjectList.get(i);
-
+        for (EduSubject eduSubject : oneSubjectList) {
             //new OneSubject设置值，add加入list
             OneSubject oneSubject = new OneSubject();
 //            oneSubject.setId(eduSubject.getId());
@@ -71,10 +75,9 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
 
             finnalList.add(oneSubject);
             //4封装二级分类
-            //创建list集合封装每一个一级分类的二级分类
+            //创建list集合封装每一个一级分类下的多个二级分类
             ArrayList<TwoSubject> twoFinnalList = new ArrayList<>();
-            for (int j = 0; j < twoSubjectList.size(); j++) {
-                EduSubject eduSubject2 = twoSubjectList.get(j);
+            for (EduSubject eduSubject2 : twoSubjectList) {
                 if (eduSubject.getId().equals(eduSubject2.getParentId())) {
                     TwoSubject twoSubject = new TwoSubject();
                     //如过一级分类的id==二级分类的parent_id,进行封装

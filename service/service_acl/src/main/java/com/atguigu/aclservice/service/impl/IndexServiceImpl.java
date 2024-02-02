@@ -7,6 +7,7 @@ import com.atguigu.aclservice.service.IndexService;
 import com.atguigu.aclservice.service.PermissionService;
 import com.atguigu.aclservice.service.RoleService;
 import com.atguigu.aclservice.service.UserService;
+import com.atguigu.servicebase.exceptionhandler.GuliException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -38,22 +39,29 @@ public class IndexServiceImpl implements IndexService {
      * @return
      */
     public Map<String, Object> getUserInfo(String username) {
+        //返回数据
         Map<String, Object> result = new HashMap<>();
+        //根据用户名获取用户信息
         User user = userService.selectByUsername(username);
         if (null == user) {
-            //throw new GuliException(ResultCodeEnum.FETCH_USERINFO_ERROR);
+//            throw new GuliException(ResultCodeEnum.FETCH_USERINFO_ERROR);
         }
 
         //根据用户id获取角色
         List<Role> roleList = roleService.selectRoleByUserId(user.getId());
-        List<String> roleNameList = roleList.stream().map(item -> item.getRoleName()).collect(Collectors.toList());
+        //从roleList中获取getRoleName的数据
+        List<String> roleNameList = roleList
+                .stream()
+                .map(Role::getRoleName)
+                .collect(Collectors.toList());
         if(roleNameList.size() == 0) {
             //前端框架必须返回一个角色，否则报错，如果没有角色，返回一个空角色
             roleNameList.add("");
         }
 
         //根据用户id获取操作权限值
-        List<String> permissionValueList = permissionService.selectPermissionValueByUserId(user.getId());
+        List<String> permissionValueList = permissionService
+                .selectPermissionValueByUserId(user.getId());
         redisTemplate.opsForValue().set(username, permissionValueList);
 
         result.put("name", user.getUsername());
@@ -72,7 +80,8 @@ public class IndexServiceImpl implements IndexService {
         User user = userService.selectByUsername(username);
 
         //根据用户id获取用户菜单权限
-        List<JSONObject> permissionList = permissionService.selectPermissionByUserId(user.getId());
+        List<JSONObject> permissionList = permissionService
+                .selectPermissionByUserId(user.getId());
         return permissionList;
     }
 
